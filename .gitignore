@@ -1,0 +1,5 @@
+**/vendor/**
+**/old/**
+confs/OAuthConfig.ini
+*.ini
+/public_html/ncc_to_c/jobs
