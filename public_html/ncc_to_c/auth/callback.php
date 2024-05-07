@@ -35,8 +35,8 @@ $client = new Client($conf);
 // Get the Request Token's details from the session and create a new Token object.
 session_start();
 $requestToken = new Token(
-	$_SESSION['request_key_x'],
-	$_SESSION['request_secret_x']
+	$_SESSION['request_key'],
+	$_SESSION['request_secret']
 );
 
 // Send an HTTP request to the wiki to retrieve an Access Token.
@@ -49,7 +49,7 @@ $_SESSION['access_key'] = $accessToken1->key;
 $_SESSION['access_secret'] = $accessToken1->secret;
 
 // You also no longer need the Request Token.
-unset($_SESSION['request_key_x'], $_SESSION['request_secret_x']);
+unset($_SESSION['request_key'], $_SESSION['request_secret']);
 
 require_once __DIR__ . '/userinfo.php';
 // The demo continues in demo/edit.php
@@ -57,7 +57,7 @@ echo "Continue to <a href='auth.php?a=edit'>edit</a><br>";
 echo "Continue to <a href='auth.php?a=index'>index</a><br>";
 
 $username = get_user_name();
-$_SESSION['user_name'] = $username;
+$_SESSION['username'] = $username;
 // Example 3: make an edit (getting the edit token first).
 # automatic redirect to edit.php
 
