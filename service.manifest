@@ -1,0 +1,7 @@
+# webservice --backend=kubernetes php8.2 start
+# This file is used by Toolforge infrastructure.
+# Please do not edit manually at this time.
+# Tue May  7 18:41:39 2024
+backend: kubernetes
+version: 4
+web: php7.4
