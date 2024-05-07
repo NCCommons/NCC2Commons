@@ -15,7 +15,7 @@ use function Log\log_files_to_json;
 $title = $_REQUEST['title'] ?? '';
 $files = $_REQUEST['files'] ?? '';
 
-$username = $_SESSION['username'] ?? '';
+$username = $_SESSION['user_name'] ?? '';
 //---
 $login_sp = '';
 //---

@@ -4,7 +4,7 @@ function setAuthorizedUser(username) {
     $('#username').html(username);
     $('#user_li').show();
     $('#user_logout').show();
-    sessionStorage.setItem('username', username);
+    sessionStorage.setItem('user_name', username);
 }
 
 function user_login() {

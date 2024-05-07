@@ -51,8 +51,8 @@ list($authUrl, $token) = $client->initiate();
 // Store the Request Token in the session. We will retrieve it from there when the user is sent back
 // from the wiki (see demo/callback.php).
 session_start();
-$_SESSION['request_key'] = $token->key;
-$_SESSION['request_secret'] = $token->secret;
+$_SESSION['request_key_x'] = $token->key;
+$_SESSION['request_secret_x'] = $token->secret;
 
 // Redirect the user to the authorization URL. This is usually done with an HTTP redirect, but we're
 // making it a manual link here so you can see everything in action.
