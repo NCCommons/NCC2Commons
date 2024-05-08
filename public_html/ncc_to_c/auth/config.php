@@ -6,16 +6,9 @@ $pathParts = explode('public_html', __FILE__);
 // the root path is the first part of the split file path
 $ROOT_PATH = $pathParts[0];
 //---
-$inifile = $ROOT_PATH . '/confs/OAuthConfig_commons.ini';
-$oauthUrl = 'https://commons.wikimedia.org/w/index.php?title=Special:OAuth';
-$gUserAgent = 'commons MediaWikiOAuthClient/1.0';
-//---
-// if url has ncc_to_c2 in it use nccommons.org
-if (strpos($_SERVER['SCRIPT_NAME'], 'ncc_to_c2') === 1) {
-    $oauthUrl = 'https://nccommons.org/w/index.php?title=Special:OAuth';
-    $inifile = $ROOT_PATH . '/confs/OAuthConfig.ini';
-    $gUserAgent = 'xcommons MediaWikiOAuthClient/1.0';
-}
+$inifile = $ROOT_PATH . '/confs/OAuthConfig_beta.ini';
+$oauthUrl = 'https://meta.wikimedia.beta.wmflabs.org/w/index.php?title=Special:OAuth';
+$gUserAgent = 'commonsbeta MediaWikiOAuthClient/1.0';
 //---
 $ini = parse_ini_file($inifile);
 //---
@@ -34,7 +27,6 @@ if (
     exit(0);
 }
 // $gUserAgent = $ini['agent'];
-$gUserAgent = 'commons MediaWikiOAuthClient/1.0';
 // Load the user token (request or access) from the session
 //---
 // To get this demo working, you need to go to this wiki and register a new OAuth consumer.

@@ -57,7 +57,8 @@ foreach (explode("\n", $files) as $file) {
                     <i class="fa fa-check"></i> Success
                 </div>
                 <div id="new_$i" style="display: none;">
-                    <a href="https://commons.wikimedia.org/wiki/$file_to_html" target="_blank"><i class="fa fa-thumbs-up"></i> New file</a>
+                    <!-- <a href="https://commons.wikimedia.org/wiki/$file_to_html" target="_blank"><i class="fa fa-thumbs-up"></i> New file</a> -->
+                    <a href="https://meta.wikimedia.beta.wmflabs.org/wiki/$file_to_html" target="_blank"><i class="fa fa-thumbs-up"></i> New file</a>
                 </div>
             </td>
         </tr>
