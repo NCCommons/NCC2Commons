@@ -62,7 +62,6 @@ async function find_info(id) {
     //---
     var site = 'nccommons';
     //---
-
     await check_image_exist(file, site, function (exists, img_url) {
         if (exists) {
             $('#name_' + id).addClass("text-success");

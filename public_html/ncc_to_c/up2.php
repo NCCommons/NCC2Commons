@@ -35,6 +35,8 @@ foreach (explode("\n", $files) as $file) {
 
     $i++;
     $file_to_html = htmlspecialchars($file);
+    $url_file = "https://$source_site/wiki/$file_to_html";
+    $url_file_new = "https://$target_domain/wiki/$file_to_html";
     $files_rows .= <<<HTML
         <tr>
             <td>
@@ -42,7 +44,7 @@ foreach (explode("\n", $files) as $file) {
             </td>
             <td>
                 <span id="url_$i" style="display: none;"></span>
-                <a id="name_$i" href="https://nccommons.org/wiki/$file_to_html" target="_blank">$file</a>
+                <a id="name_$i" href="$url_file" target="_blank">$file</a>
             </td>
             <td>
                 <div id="$i">
@@ -57,8 +59,7 @@ foreach (explode("\n", $files) as $file) {
                     <i class="fa fa-check"></i> Success
                 </div>
                 <div id="new_$i" style="display: none;">
-                    <!-- <a href="https://commons.wikimedia.org/wiki/$file_to_html" target="_blank"><i class="fa fa-thumbs-up"></i> New file</a> -->
-                    <a href="https://meta.wikimedia.beta.wmflabs.org/wiki/$file_to_html" target="_blank"><i class="fa fa-thumbs-up"></i> New file</a>
+                <a href="$url_file_new" target="_blank"><i class="fa fa-thumbs-up"></i> New file</a>
                 </div>
             </td>
         </tr>
