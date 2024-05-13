@@ -3,3 +3,5 @@
 confs/OAuthConfig.ini
 *.ini
 /public_html/ncc_to_c/jobs
+/x
+/public_html/demo
