@@ -9,8 +9,6 @@ function is_active($page, $id) {
 function header_nav_tag($title="NCCommons to Commons", $page='', $log_lis='') {
     global $them_li;
 
-    $multi2_active = is_active($page, 'multi2');
-    $mass_active = is_active($page, 'mass');
     $ncc_to_c_active = is_active($page, 'ncc_to_c');
     // ---
     $login_logout_lis = <<<HTML
@@ -49,21 +47,6 @@ function header_nav_tag($title="NCCommons to Commons", $page='', $log_lis='') {
                             <li class="nav-item col-4 col-lg-auto">
                                 <a class="nav-link py-2 px-0 px-lg-2" href="https://nccommons.org/" target="_blank">
                                     <span class="navtitles">NC Commons</span>
-                                </a>
-                            </li>
-                            <li class="nav-item col-4 col-lg-auto">
-                                <a class="nav-link py-2 px-0 px-lg-2" href="/">
-                                    <span class="navtitles">CropTool</span>
-                                </a>
-                            </li>
-                            <li class="nav-item col-4 col-lg-auto $multi2_active" id="multi2">
-                                <a class="nav-link py-2 px-0 px-lg-2 $multi2_active" href="/multi2">
-                                    <span class="navtitles">Multi CropTool</span>
-                                </a>
-                            </li>
-                            <li class="nav-item col-4 col-lg-auto $mass_active" id="mass">
-                                <a class="nav-link py-2 px-0 px-lg-2 $mass_active" href="../mass">
-                                    <span class="navtitles">Mass Upload</span>
                                 </a>
                             </li>
                             <li class="nav-item col-4 col-lg-auto $ncc_to_c_active" id="ncc_to_c">
