@@ -14,7 +14,8 @@ use function Log\log_files_to_json;
 
 $title = $_REQUEST['title'] ?? '';
 $files = $_REQUEST['files'] ?? '';
-
+// remove | from files
+$files = str_replace('|', "", $files);
 $username = $_SESSION['username'] ?? '';
 //---
 $login_sp = '';
@@ -102,7 +103,7 @@ log_files_to_json($title, $files);
 echo <<<HTML
         </div>
     </div>
-    <script src="js/up.js"></script>
+    <script src="js/up2.js"></script>
     <script src="js/info.js"></script>
 HTML;
 
