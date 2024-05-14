@@ -141,7 +141,10 @@ async function start_up(file, img_url, id) {
 function upload_Success(data, id, file, idElement) {
     var results = data.result;
     var warnings = data.warnings;
-    var exists = data.warnings.exists;
+    var exists = null;
+    if (data.warnings) {
+        exists = data.warnings.exists;
+    }
 
     if (results == "Success") {
         $("#success_" + id).show();
