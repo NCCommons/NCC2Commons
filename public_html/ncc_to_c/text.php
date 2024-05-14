@@ -28,6 +28,12 @@ function make_file_text($filename) {
 
 
     $text = get_from_nc_commons($filename);
+    // if text has "{{PD-medical}}" then remove "{{CC-BY-NC-SA-3.0}}"
+
+    if (strpos($text, "{{PD-medical}}") !== false) {
+        $text = str_replace("{{CC-BY-NC-SA-3.0}}", "", $text);
+        $text = str_replace("|Permission =", "|Permission ={{PD-medical}} ", $text);
+    }
 
     // remove categories
     $text = preg_replace('/\[\[Category:(.*?)\]\]/', '', $text);
