@@ -29,12 +29,13 @@ echo "You are authenticated as " . htmlspecialchars($ident->username, ENT_QUOTES
 
 function get_edit_token()
 {
-	global $client, $accessToken, $apiUrl;
+	global $client, $accessToken, $apiUrl, $editToken;
 	// Example 3: make an edit (getting the edit token first).
-	$editToken = json_decode($client->makeOAuthCall(
+	$response = $client->makeOAuthCall(
 		$accessToken,
 		"$apiUrl?action=query&meta=tokens&format=json"
-	))->query->tokens->csrftoken;
+	);
+	$editToken = json_decode($response)->query->tokens->csrftoken;
 	//---
 	return $editToken;
 }

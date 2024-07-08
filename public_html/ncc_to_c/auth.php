@@ -1,5 +1,5 @@
 <?php
-if (isset($_REQUEST['test'])) {
+if (isset($_REQUEST['test']) || $_SERVER['SERVER_NAME'] == 'localhost') {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
@@ -7,11 +7,13 @@ if (isset($_REQUEST['test'])) {
 //---
 // this file is redirected to files in the auth directory
 // example:
-// url auth.php?a=login  -> auth/login.php
+// url auth.php?a=login&to=mass  -> auth/login.php
+// url auth.php?a=logout -> auth/logout.php
 // url auth.php?a=edit   -> auth/edit.php
 // url auth.php?a=index  ->
 // code:
 
+$to = $_GET['to'] ?? '';
 // header('Content-type: application/json; charset=utf-8');
 
 // After

@@ -1,6 +1,6 @@
 <?php
 
-if (isset($_REQUEST['test'])) {
+if (isset($_REQUEST['test']) || $_SERVER['SERVER_NAME'] == 'localhost') {
 	ini_set('display_errors', 1);
 	ini_set('display_startup_errors', 1);
 	error_reporting(E_ALL);
@@ -18,7 +18,7 @@ if (!isset($_GET['oauth_verifier'])) {
 	echo "This page should only be access after redirection back from the wiki.";
 	echo <<<HTML
 		Go to this URL to authorize this tool:<br />
-		<a href='auth.php?a=login'>Login</a><br />
+		<a href='auth.php?a=login&to=$tool_folder'>Login</a><br />
 	HTML;
 	exit(1);
 }
@@ -61,11 +61,18 @@ $_SESSION['username'] = $username;
 // Example 3: make an edit (getting the edit token first).
 # automatic redirect to edit.php
 
-$test = $_REQUEST['test'] ?? '';
+foreach (['test'] as $key) {
+	$da = $_GET[$key] ?? '';
+	if ($da != '') $state[$key] = $da;
+};
 //---
-$newurl = "index.php";
+$state = http_build_query($state);
+//---
+$newurl = "/$tool_folder/index.php?$state";
 //---
 echo "header('Location: $newurl');<br>";
+//---
+$test = $_GET['test'] ?? '';
 //---
 if ($test == '') {
 	header("Location: $newurl");

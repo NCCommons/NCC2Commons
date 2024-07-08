@@ -6,6 +6,8 @@ $pathParts = explode('public_html', __FILE__);
 // the root path is the first part of the split file path
 $ROOT_PATH = $pathParts[0];
 //---
+$tool_folder = "ncc_to_c";
+//---
 $main_site = "https://ncc2commons.toolforge.org";
 //---
 $source_site = "nccommons.org";

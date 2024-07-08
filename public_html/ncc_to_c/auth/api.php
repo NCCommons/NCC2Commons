@@ -1,6 +1,6 @@
 <?php
 //---
-if (isset($_REQUEST['test'])) {
+if (isset($_REQUEST['test']) || $_SERVER['SERVER_NAME'] == 'localhost') {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
@@ -25,6 +25,11 @@ $conf->setConsumer(new Consumer($consumerKey, $consumerSecret));
 $conf->setUserAgent($gUserAgent);
 $client = new Client($conf);
 
+// if (!isset($_SESSION['access_key']) || !isset($_SESSION['access_secret'])) {
+//     echo "Access token not found in session.";
+//     exit;
+// }
+
 // Load the Access Token from the session.
 session_start();
 $accessToken = new Token($_SESSION['access_key'], $_SESSION['access_secret']);
@@ -36,10 +41,11 @@ function get_edit_token()
 {
     global $client, $accessToken, $apiUrl;
     // Example 3: make an edit (getting the edit token first).
-    $editToken = json_decode($client->makeOAuthCall(
+    $response = $client->makeOAuthCall(
         $accessToken,
         "$apiUrl?action=query&meta=tokens&format=json"
-    ))->query->tokens->csrftoken;
+    );
+    $editToken = json_decode($response)->query->tokens->csrftoken;
     //---
     return $editToken;
 }
@@ -48,9 +54,7 @@ function doApiQuery($Params, $addtoken = null)
 {
     global $client, $accessToken, $apiUrl;
     //---
-    if ($addtoken) {
-        $Params['token'] = get_edit_token();
-    }
+    if ($addtoken !== null) $Params['token'] = get_edit_token();
     //---
     $Result = $client->makeOAuthCall(
         $accessToken,
@@ -93,6 +97,7 @@ function downloadFile($url)
 function upload($post)
 {
     $url = $post['url'] ?? '';
+    $file = $_FILES['file'];
 
     // Validate and sanitize other inputs if needed
     $filename = filter_var($post['filename'] ?? '', FILTER_SANITIZE_STRING);
@@ -106,7 +111,7 @@ function upload($post)
         'comment' => $comment,
     ];
 
-    if ($url == '') {
+    if ($url == '' && $file == '') {
         $err = ["error" => "Invalid", "filename" => $filename, "url" => $url];
         echo json_encode($err);
         return;

@@ -1,6 +1,6 @@
 <?php
 //---
-if (isset($_REQUEST['test'])) {
+if (isset($_REQUEST['test']) || $_SERVER['SERVER_NAME'] == 'localhost') {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
@@ -32,12 +32,12 @@ $client = new Client($conf);
 
 function make_callback_url()
 {
-    global $main_site;
+    global $main_site, $tool_folder;
     $test = $_REQUEST['test'] ?? '';
     //---
     $state = ($test != '') ? '&test=1' : '';
     //---
-    $oauth_call = $main_site . "/ncc_to_c/auth.php?a=callback" . $state;
+    $oauth_call = $main_site . "/$tool_folder/auth.php?a=callback" . $state;
     //---
     return $oauth_call;
 }

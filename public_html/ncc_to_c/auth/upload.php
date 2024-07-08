@@ -1,6 +1,6 @@
 <?php
 //---
-if (isset($_REQUEST['test'])) {
+if (isset($_REQUEST['test']) || $_SERVER['SERVER_NAME'] == 'localhost') {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
@@ -92,7 +92,7 @@ $by = $_REQUEST['by'] ?? 'file';
 
 $tmp_file = downloadFile($url);
 $tmp_name = basename($tmp_file);
-$newurl = $main_site . "/ncc_to_c/files/$tmp_name";
+$newurl = $main_site . "/$tool_folder/files/$tmp_name";
 
 if ($by == 'url') {
     // $data['url'] = $url;
@@ -113,12 +113,19 @@ $result = $client->makeOAuthCall(
 );
 //---
 if (!$result) {
-    $err = ["error" => "result error"];
+    $err = ["error" => "Failed to upload the file"];
     echo json_encode($err);
     exit;
 }
 //---
 $response = json_decode($result, true);
+//---
+if (isset($response['error'])) {
+    $err = ["error" => $response['error']];
+    echo json_encode($err);
+    exit;
+}
+//---
 // Delete the temporary file after processing
 unlink($tmp_file);
 

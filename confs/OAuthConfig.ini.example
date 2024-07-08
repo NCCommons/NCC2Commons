@@ -1,3 +1,4 @@
 agent = ''
 consumerKey = ''
 consumerSecret = ''
+domain = 'nccommons.org'

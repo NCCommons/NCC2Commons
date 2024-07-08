@@ -78,7 +78,7 @@ $log_lis = <<<HTML
 	</li>
 HTML;
 //---
-echo header_nav_tag($title = "NCCommons to Commons", $page = 'ncc_to_c', $log_lis = $log_lis);
+echo header_nav_tag($title = "NCCommons to Commons", $page = $tool_folder, $log_lis = $log_lis);
 //---
 ?>
 

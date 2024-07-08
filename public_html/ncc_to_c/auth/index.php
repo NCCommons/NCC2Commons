@@ -1,5 +1,5 @@
 <?php
-if (isset($_REQUEST['test'])) {
+if (isset($_REQUEST['test']) || $_SERVER['SERVER_NAME'] == 'localhost') {
 	ini_set('display_errors', 1);
 	ini_set('display_startup_errors', 1);
 	error_reporting(E_ALL);
@@ -28,20 +28,20 @@ $username = $_SESSION['username'] ?? '';
 //---
 function echo_login()
 {
-	global $username;
+	global $username, $tool_folder;
 	$safeUsername = htmlspecialchars($username); // Escape characters to prevent XSS
 
 	if ($username == '') {
 		echo <<<HTML
 			You are not authenticated.<br />
 			Go to this URL to authorize this tool:<br />
-			<a href='auth.php?a=login'>Login</a><br />
+			<a href='auth.php?a=login&to=$tool_folder'>Login</a><br />
 		HTML;
 	} else {
 		echo <<<HTML
 			You are authenticated as $safeUsername.<br />
 			Continue to <a href='auth.php?a=edit'>edit</a><br>
-			<a href='auth.php?a=logout'>logout</a>
+			<a href='logout.php'>logout</a>
 		HTML;
 	};
 	//---
