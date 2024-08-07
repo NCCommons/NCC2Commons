@@ -2,22 +2,23 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+require_once __DIR__ . '/config.php';
+
 use MediaWiki\OAuthClient\Client;
 use MediaWiki\OAuthClient\ClientConfig;
 use MediaWiki\OAuthClient\Consumer;
 use MediaWiki\OAuthClient\Token;
-
-// Output the demo as plain text, for easier formatting.
-// header( 'Content-type: text/plain' );
-
-// Get the wiki URL and OAuth consumer details from the config file.
-require_once __DIR__ . '/config.php';
 
 // Configure the OAuth client with the URL and consumer details.
 $conf = new ClientConfig($oauthUrl);
 $conf->setConsumer(new Consumer($consumerKey, $consumerSecret));
 $conf->setUserAgent($gUserAgent);
 $client = new Client($conf);
+
+// if (!isset($_SESSION['access_key']) || !isset($_SESSION['access_secret'])) {
+//     echo "Access token not found in session.";
+//     exit;
+// }
 
 // Load the Access Token from the session.
 session_start();

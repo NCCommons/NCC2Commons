@@ -1,24 +1,16 @@
 <?php
-//---
-if (isset($_REQUEST['test']) || $_SERVER['SERVER_NAME'] == 'localhost') {
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-};
-//---
+header('Content-type: application/json; charset=utf-8');
+
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/../text.php';
+
+require_once __DIR__ . '/config.php';
+
+require_once __DIR__ . '/text.php';
 
 use MediaWiki\OAuthClient\Client;
 use MediaWiki\OAuthClient\ClientConfig;
 use MediaWiki\OAuthClient\Consumer;
 use MediaWiki\OAuthClient\Token;
-
-// Output the demo as json
-header('Content-type: application/json; charset=utf-8');
-
-// Get the wiki URL and OAuth consumer details from the config file.
-require_once __DIR__ . '/config.php';
 
 // Configure the OAuth client with the URL and consumer details.
 $conf = new ClientConfig($oauthUrl);
@@ -71,7 +63,11 @@ $url = $_REQUEST['url'] ?? '';
 $filename = filter_var($_REQUEST['filename'] ?? '', FILTER_SANITIZE_STRING);
 $comment = filter_var($_REQUEST['comment'] ?? '', FILTER_SANITIZE_STRING);
 
-$file_text = make_file_text($filename);
+$file_text = "";
+
+if (function_exists('make_file_text')) {
+    $file_text = make_file_text($filename);
+};
 
 $data = [
     'action' => 'upload',

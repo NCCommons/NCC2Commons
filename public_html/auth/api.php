@@ -1,34 +1,21 @@
 <?php
-//---
-if (isset($_REQUEST['test']) || $_SERVER['SERVER_NAME'] == 'localhost') {
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-};
-//---
+
+header('Content-type: application/json; charset=utf-8');
 require_once __DIR__ . '/../vendor/autoload.php';
+
+require_once __DIR__ . '/config.php';
+
 
 use MediaWiki\OAuthClient\Client;
 use MediaWiki\OAuthClient\ClientConfig;
 use MediaWiki\OAuthClient\Consumer;
 use MediaWiki\OAuthClient\Token;
 
-// Output the demo as json
-header('Content-type: application/json; charset=utf-8');
-
-// Get the wiki URL and OAuth consumer details from the config file.
-require_once __DIR__ . '/config.php';
-
 // Configure the OAuth client with the URL and consumer details.
 $conf = new ClientConfig($oauthUrl);
 $conf->setConsumer(new Consumer($consumerKey, $consumerSecret));
 $conf->setUserAgent($gUserAgent);
 $client = new Client($conf);
-
-// if (!isset($_SESSION['access_key']) || !isset($_SESSION['access_secret'])) {
-//     echo "Access token not found in session.";
-//     exit;
-// }
 
 // Load the Access Token from the session.
 session_start();
@@ -111,7 +98,7 @@ function upload($post)
         'comment' => $comment,
     ];
 
-    if ($url == '' && $file == '') {
+    if ($url == '' && (!isset($file))) {
         $err = ["error" => "Invalid", "filename" => $filename, "url" => $url];
         echo json_encode($err);
         return;
@@ -123,8 +110,13 @@ function upload($post)
     if ($by == 'url') {
         $data['url'] = $url;
     } else {
-        $tmp_file = downloadFile($url);
-        $data['file'] = new \CURLFile($tmp_file);
+        // CURLFile
+        if (isset($file)) {
+            $data['file'] = new \CURLFile($file['name'], $file['type'], $file['tmp_name'], $file['size']);
+        } else {
+            $tmp_file = downloadFile($url);
+            $data['file'] = new \CURLFile($tmp_file);
+        }
     }
     // Perform whatever processing or API call you need with the uploaded file
     $response = doEdit($data);

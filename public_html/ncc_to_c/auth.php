@@ -5,33 +5,22 @@ if (isset($_REQUEST['test']) || $_SERVER['SERVER_NAME'] == 'localhost') {
     error_reporting(E_ALL);
 };
 //---
-// this file is redirected to files in the auth directory
-// example:
-// url auth.php?a=login&to=mass  -> auth/login.php
-// url auth.php?a=logout -> auth/logout.php
-// url auth.php?a=edit   -> auth/edit.php
-// url auth.php?a=index  ->
-// code:
-
-$to = $_GET['to'] ?? '';
-// header('Content-type: application/json; charset=utf-8');
-
-// After
-$allowedActions = ['login', 'callback', 'edit', 'api', 'index', 'userinfo', 'upload'];
-
-$action = $_GET['a'] ?? 'index';
-
-if (!in_array($action, $allowedActions)) {
-    // Handle error or redirect to a default action
-    $action = 'index';
-}
-$actionFile = $action . '.php';
-
-// Redirect to the corresponding action file
-// header("Location: auth/" . $actionFile);
-require_once __DIR__ . "/auth/" . $actionFile;
-
-if ($action == 'index') {
-    echo_login();
-}
-exit;
+// get the root path from __FILE__ , split before public_html
+// split the file path on the public_html directory
+$pathParts = explode('public_html', __FILE__);
+// the root path is the first part of the split file path
+$ROOT_PATH = $pathParts[0];
+//---
+$tool_folder = "ncc_to_c";
+//---
+$main_site = "https://ncc2commons.toolforge.org";
+//---
+$source_site = "nccommons.org";
+//---
+$target_domain = "commons.wikimedia.org";
+//---
+$inifile = $ROOT_PATH . '/confs/OAuthConfig_commons_new.ini';
+//---
+$gUserAgent = 'commonsbeta MediaWikiOAuthClient/1.0';
+//---
+require_once __DIR__ . "/../auth/load.php";
