@@ -45,7 +45,6 @@ echo <<<HTML
     <script src='$hoste/ajax/libs/datatables.net-bs5/1.13.1/dataTables.bootstrap5.min.js'></script>
     <script src='$hoste/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js'></script>
 
-    <!-- <script src="/helps/auth.js"></script> -->
     <script src="js/ncc.js"></script>
     <script src="js/auto_comp.js"></script>
     <style>
