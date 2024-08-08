@@ -2,6 +2,7 @@
 header('Content-type: application/json; charset=utf-8');
 
 include_once __DIR__ . '/config.php';
+include_once __DIR__ . '/helps.php';
 
 use MediaWiki\OAuthClient\Client;
 use MediaWiki\OAuthClient\ClientConfig;
@@ -14,9 +15,11 @@ $conf->setConsumer(new Consumer($consumerKey, $consumerSecret));
 $conf->setUserAgent($gUserAgent);
 $client = new Client($conf);
 
-// Load the Access Token from the session.
-session_start();
-$accessToken = new Token($_SESSION['access_key'], $_SESSION['access_secret']);
+
+$access_key = get_from_cookie('access_key');
+$access_secret = get_from_cookie('access_secret');
+
+$accessToken = new Token($access_key, $access_secret);
 
 // Example 1: get the authenticated user's identity.
 $ident = $client->identify($accessToken);
