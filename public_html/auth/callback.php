@@ -1,9 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
-require_once __DIR__ . '/config.php';
-
 use MediaWiki\OAuthClient\Client;
 use MediaWiki\OAuthClient\ClientConfig;
 use MediaWiki\OAuthClient\Consumer;
@@ -32,33 +28,49 @@ $requestToken = new Token(
 );
 
 // Send an HTTP request to the wiki to retrieve an Access Token.
-$accessToken1 = $client->complete($requestToken,  $_GET['oauth_verifier']);
+$accessToken1 = $client->complete($requestToken, $_GET['oauth_verifier']);
 
 // At this point, the user is authenticated, and the access token can be used to make authenticated
 // API requests to the wiki. You can store the Access Token in the session or other secure
 // user-specific storage and re-use it for future requests.
-$_SESSION['access_key'] = $accessToken1->key;
-$_SESSION['access_secret'] = $accessToken1->secret;
+// $_SESSION['access_key'] = $accessToken1->key;
+add_to_cookie('access_key', $accessToken1->key);
+
+// $_SESSION['access_secret'] = $accessToken1->secret;
+add_to_cookie('access_secret', $accessToken1->secret);
 
 // You also no longer need the Request Token.
 unset($_SESSION['request_key'], $_SESSION['request_secret']);
 
-require_once __DIR__ . '/userinfo.php';
+// include_once __DIR__ . '/make_user_infos.php';
 // The demo continues in demo/edit.php
 echo "Continue to <a href='auth.php?a=edit'>edit</a><br>";
 echo "Continue to <a href='auth.php?a=index'>index</a><br>";
 
-$username = get_user_name();
-$_SESSION['username'] = $username;
-// Example 3: make an edit (getting the edit token first).
-# automatic redirect to edit.php
+// $accessToken = new Token($_SESSION['access_key'], $_SESSION['access_secret']);
+$accessToken = new Token($accessToken1->key, $accessToken1->secret);
 
+$ident = $client->identify($accessToken);
+// Use htmlspecialchars to properly encode the output and prevent XSS vulnerabilities.
+echo "You are authenticated as " . htmlspecialchars($ident->username, ENT_QUOTES, 'UTF-8') . ".\n\n";
+// ---
+$_SESSION['username'] = $ident->username;
+
+$twoYears = time() + 60 * 60 * 24 * 365 * 2;
+
+add_to_cookie('username', $ident->username);
+
+echo "Continue to <a href='auth.php?a=index'>index</a><br>";
+
+$return_to = $_GET['return_to'] ?? '';
+// ---
 $test = $_REQUEST['test'] ?? '';
 $state = ($test != '') ? "?test=$test" : "";
-//---
+// ---
 $newurl = "/$tool_folder/index.php$state";
-//---
-echo "header('Location: $newurl');<br>";
-//---
+// ---
+// echo "header('Location: $newurl');<br>";
+// ---
+// if ($test == '') {
 header("Location: $newurl");
-//---
+// }

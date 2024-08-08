@@ -1,5 +1,6 @@
 {
     "require": {
-        "mediawiki/oauthclient": "^2.0"
+        "mediawiki/oauthclient": "^2.0",
+        "defuse/php-encryption": "^2.4"
     }
 }
