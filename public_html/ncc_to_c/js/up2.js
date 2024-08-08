@@ -89,6 +89,9 @@ async function upload_api(file, file_url, id, callback) {
             // data: formData,
             type: "GET",
             dataType: "json",
+            headers: {
+                'Api-User-Agent': "NCC2Commons/1.0 (https://NCC2Commons.toolforge.org/; tools.NCC2Commons@toolforge.org)"
+            },
             success: function (data) {
                 callback(null, data, api_url);
                 resolve();
@@ -181,6 +184,9 @@ async function up_files() {
         data: { a: 'userinfo' },
         type: "GET",
         dataType: "json",
+        headers: {
+            'Api-User-Agent': "NCC2Commons/1.0 (https://NCC2Commons.toolforge.org/; tools.NCC2Commons@toolforge.org)"
+        },
         success: function (data) {
             // { "batchcomplete": "", "query": { "userinfo": { "id": 1644737, "name": "Mr. Ibrahem", "rights": [ "read", "writeapi", "abusefilter-view", "abusefilter-log", "upload", "upload_by_url", "reupload-own", "reupload", "autoconfirmed", "editsemiprotected", "skipcaptcha", "abusefilter-log-detail", "transcode-reset" ] } } }
             var name = data.query.userinfo.name;

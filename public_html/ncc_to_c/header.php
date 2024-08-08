@@ -80,7 +80,7 @@ $log_lis = <<<HTML
 		</a>
 	</li>
 	<li class="nav-item col-4 col-lg-auto">
-		<a id="logout_btn" class="nav-link py-2 px-0 px-lg-2" href="logout.php" style="display:none">
+		<a id="logout_btn" class="nav-link py-2 px-0 px-lg-2" href="auth.php?a=logout" style="display:none">
 			<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i> <span class="d-lg-none navtitles">Logout</span>
 		</a>
 	</li>
