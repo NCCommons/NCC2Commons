@@ -6,7 +6,7 @@ include_once __DIR__ . '/helps.php';
 $secure = ($_SERVER['SERVER_NAME'] == "localhost") ? false : true;
 if ($_SERVER['SERVER_NAME'] != 'localhost') {
 	session_name("ncc2commonstoolforgeoauth");
-	session_set_cookie_params(0, "/", $domain, $secure, $secure);
+	session_set_cookie_params(0, "/", $tool_domain, $secure, $secure);
 }
 //---
 $username = get_from_cookie('username');
@@ -19,7 +19,7 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
 	$access_key = get_from_cookie('access_key');
 	$access_secret = get_from_cookie('access_secret');
 	if ($access_key == '' || $access_secret == '') {
-		setcookie('username', '', time() - 3600, "/", $domain, true, true);
+		setcookie('username', '', time() - 3600, "/", $tool_domain, true, true);
 		$username = '';
 	}
 }

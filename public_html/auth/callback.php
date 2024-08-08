@@ -54,7 +54,7 @@ $ident = $client->identify($accessToken);
 // Use htmlspecialchars to properly encode the output and prevent XSS vulnerabilities.
 echo "You are authenticated as " . htmlspecialchars($ident->username, ENT_QUOTES, 'UTF-8') . ".\n\n";
 // ---
-$_SESSION['username'] = $ident->username;
+// $_SESSION['username'] = $ident->username;
 
 $twoYears = time() + 60 * 60 * 24 * 365 * 2;
 

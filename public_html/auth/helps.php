@@ -5,7 +5,7 @@ use Defuse\Crypto\Crypto;
 
 function add_to_cookie($key, $value)
 {
-    global $cookie_key, $domain;
+    global $cookie_key, $tool_domain;
     $twoYears = time() + 60 * 60 * 24 * 365 * 2;
     $secure = ($_SERVER['SERVER_NAME'] == "localhost") ? false : true;
     try {
@@ -20,7 +20,7 @@ function add_to_cookie($key, $value)
         $value,
         $twoYears,
         "/",
-        $domain,// "mdwiki.toolforge.org",
+        $tool_domain,// "mdwiki.toolforge.org",
         $secure,  // only secure (https)
         $secure   // httponly
     );

@@ -2,7 +2,16 @@
 <HTML lang=en dir=ltr data-bs-theme="light" xmlns="http://www.w3.org/1999/xhtml">
 <?php
 //---
-include_once __DIR__ . '/auth/user_infos.php';
+if (!getenv('INIFILE')) {
+    $ROOT_PATH = explode('public_html', __FILE__)[0];
+    //---
+    $inifile = $ROOT_PATH . '/confs/OAuthConfig_commons_new.ini';
+    //---
+    // set evnironment variables inifile
+    putenv("INIFILE=$inifile");
+}
+//---
+include_once __DIR__ . '/../auth/user_infos.php';
 //---
 echo <<<HTML
     <span id='myusername' style='display:none'>$username</span>

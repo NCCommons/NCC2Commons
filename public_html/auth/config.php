@@ -4,14 +4,7 @@ include_once __DIR__ . '/../vendor/autoload.php';
 //---
 use Defuse\Crypto\Key;
 //---
-// $tool_folder = '';
-// $main_site = '';
-// $source_site = '';
-// $target_domain = '';
-// $inifile = '';
-// $gUserAgent = '';
-//---
-$oauthUrl = 'https://' . $target_domain . '/w/index.php?title=Special:OAuth';
+$inifile = getenv('INIFILE');
 //---
 $ini = parse_ini_file($inifile);
 //---
@@ -21,7 +14,6 @@ if ($ini === false) {
     exit(0);
 }
 if (
-    !isset($ini['agent']) ||
     !isset($ini['consumerKey']) ||
     !isset($ini['consumerSecret'])
 ) {
@@ -29,15 +21,23 @@ if (
     echo 'Required configuration directives not found in ini file';
     exit(0);
 }
-
+// ---
+$consumerKey    = $ini['consumerKey'];
+$consumerSecret = $ini['consumerSecret'];
+$tool_domain    = $ini['tool_domain'] ?? '';
+$target_domain  = $ini['target_domain'];
+$source_site    = $ini['source_site'];
+$main_site      = $ini['main_site'];
+$tool_folder    = $ini['tool_folder'];
+$gUserAgent     = $ini['gUserAgent'];
+// ---
+$oauthUrl = 'https://' . $target_domain . '/w/index.php?title=Special:OAuth';
+//---
 // Make the api.php URL from the OAuth URL.
 $apiUrl = preg_replace('/index\.php.*/', 'api.php', $oauthUrl);
 
 // When you register, you will get a consumer key and secret. Put these here (and for real
 // applications, keep the secret secret! The key is public knowledge.).
-$consumerKey    = $ini['consumerKey'];
-$consumerSecret =  $ini['consumerSecret'];
 
 $cookie_key     = $ini['cookie_key'] ?? '';
-$domain         = $ini['domain'] ?? '';
 $cookie_key = Key::loadFromAsciiSafeString($cookie_key);

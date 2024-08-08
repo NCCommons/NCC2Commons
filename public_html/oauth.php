@@ -40,7 +40,6 @@ if ($ini === false) {
     exit(0);
 }
 if (
-    // !isset($ini['agent']) ||
     !isset($ini['consumerKey']) ||
     !isset($ini['consumerSecret'])
 ) {
