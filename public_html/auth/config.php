@@ -2,6 +2,8 @@
 //---
 include_once __DIR__ . '/../vendor/autoload.php';
 //---
+use Defuse\Crypto\Key;
+//---
 // $tool_folder = '';
 // $main_site = '';
 // $source_site = '';
@@ -35,3 +37,7 @@ $apiUrl = preg_replace('/index\.php.*/', 'api.php', $oauthUrl);
 // applications, keep the secret secret! The key is public knowledge.).
 $consumerKey    = $ini['consumerKey'];
 $consumerSecret =  $ini['consumerSecret'];
+
+$cookie_key     = $ini['cookie_key'] ?? '';
+$domain         = $ini['domain'] ?? '';
+$cookie_key = Key::loadFromAsciiSafeString($cookie_key);
