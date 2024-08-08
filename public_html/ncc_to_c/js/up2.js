@@ -89,6 +89,9 @@ async function upload_api(file, file_url, id, callback) {
             // data: formData,
             type: "GET",
             dataType: "json",
+            headers: {
+                'Api-User-Agent': "NCC2Commons/1.0 (https://NCC2Commons.toolforge.org/; tools.NCC2Commons@toolforge.org)"
+            },
             success: function (data) {
                 callback(null, data, api_url);
                 resolve();
@@ -175,24 +178,6 @@ function upload_Success(data, id, file, idElement) {
 }
 
 async function up_files() {
-    $.ajax({
-        async: true,
-        url: 'auth.php',
-        data: { a: 'userinfo' },
-        type: "GET",
-        dataType: "json",
-        success: function (data) {
-            // { "batchcomplete": "", "query": { "userinfo": { "id": 1644737, "name": "Mr. Ibrahem", "rights": [ "read", "writeapi", "abusefilter-view", "abusefilter-log", "upload", "upload_by_url", "reupload-own", "reupload", "autoconfirmed", "editsemiprotected", "skipcaptcha", "abusefilter-log-detail", "transcode-reset" ] } } }
-            var name = data.query.userinfo.name;
-            if (!name) {
-                name = JSON.stringify(data);
-            }
-            $('#login_sp').text(name);
-        },
-        error: function (data) {
-            $('#login_sp').text(JSON.stringify(data));
-        }
-    });
     var to_up = document.getElementsByName('toup');
 
     if (to_up.length == 0) {

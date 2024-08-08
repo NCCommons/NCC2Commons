@@ -14,7 +14,7 @@ function header_nav_tag($title="NCCommons to Commons", $page='', $log_lis='') {
     $login_logout_lis = <<<HTML
         <li class="nav-item col col-lg-auto dropdown">
             <div id="user_login" class="navbar-text">
-                <a href="https://ncc2commons.toolforge.org/api/auth/login"><i class="fas fa-sign-in-alt fa-sm fa-fw mr-2"></i> Login</a>
+                <a href="auth.php?a=login"><i class="fas fa-sign-in-alt fa-sm fa-fw mr-2"></i> Login</a>
             </div>
         </li>
         <li class="nav-item col col-lg-auto dropdown">
@@ -24,7 +24,7 @@ function header_nav_tag($title="NCCommons to Commons", $page='', $log_lis='') {
         </li>
         <li class="nav-item col col-lg-auto dropdown">
             <div id="user_logout" class="navbar-text" style="display:none">
-                <span> </span> <a href="https://ncc2commons.toolforge.org/api/auth/logout"> <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i></a>
+                <span> </span> <a href="auth.php?a=logout"> <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i></a>
             </div>
         </li>
     HTML;
@@ -55,7 +55,7 @@ function header_nav_tag($title="NCCommons to Commons", $page='', $log_lis='') {
                                 </a>
                             </li>
                             <li class="nav-item col-4 col-lg-auto">
-                                <a class="nav-link py-2 px-0 px-lg-2" href="https://github.com/MrIbrahem/Multi-CropTool" target="_blank">
+                                <a class="nav-link py-2 px-0 px-lg-2" href="https://github.com/MrIbrahem/NCC2Commons" target="_blank">
                                     <span class="navtitles">Github</span>
                                 </a>
                             </li>

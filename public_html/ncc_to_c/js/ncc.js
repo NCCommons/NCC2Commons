@@ -1,13 +1,7 @@
 
 
 async function get_files_api(title) {
-    var url = "https://nccommons.org/wiki/" + title + "?action=raw";
-
-    var proxy = window.location.origin + '/ncc_to_c/get.php?type=json&url=';
-    // if localhost use proxy
-    // if (window.location.hostname === 'localhost') {
-    url = proxy + encodeURIComponent(url);
-    // }
+    var url = window.location.origin + '/ncc_to_c/apis/get_text.php?' + jQuery.param({ "title": title })
 
     const response = await fetch(url);
 

@@ -2,7 +2,16 @@
 <HTML lang=en dir=ltr data-bs-theme="light" xmlns="http://www.w3.org/1999/xhtml">
 <?php
 //---
-include_once('auth/index.php');
+if (!getenv('INIFILE')) {
+    $ROOT_PATH = explode('public_html', __FILE__)[0];
+    //---
+    $inifile = $ROOT_PATH . '/confs/OAuthConfig_commons_new.ini';
+    //---
+    // set evnironment variables inifile
+    putenv("INIFILE=$inifile");
+}
+//---
+include_once __DIR__ . '/../auth/user_infos.php';
 //---
 echo <<<HTML
     <span id='myusername' style='display:none'>$username</span>
@@ -45,7 +54,6 @@ echo <<<HTML
     <script src='$hoste/ajax/libs/datatables.net-bs5/1.13.1/dataTables.bootstrap5.min.js'></script>
     <script src='$hoste/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js'></script>
 
-    <!-- <script src="/helps/auth.js"></script> -->
     <script src="js/ncc.js"></script>
     <script src="js/auto_comp.js"></script>
     <style>
@@ -72,13 +80,13 @@ $log_lis = <<<HTML
 		</a>
 	</li>
 	<li class="nav-item col-4 col-lg-auto">
-		<a id="logout_btn" class="nav-link py-2 px-0 px-lg-2" href="logout.php" style="display:none">
+		<a id="logout_btn" class="nav-link py-2 px-0 px-lg-2" href="auth.php?a=logout" style="display:none">
 			<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i> <span class="d-lg-none navtitles">Logout</span>
 		</a>
 	</li>
 HTML;
 //---
-echo header_nav_tag($title = "NCCommons to Commons", $page = 'ncc_to_c', $log_lis = $log_lis);
+echo header_nav_tag($title = "NCCommons to Commons", $page = $tool_folder, $log_lis = $log_lis);
 //---
 ?>
 

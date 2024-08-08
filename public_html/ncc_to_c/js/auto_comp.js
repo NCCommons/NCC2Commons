@@ -9,6 +9,9 @@ function initAutocomplete(selector) {
             $.ajax({
                 url: "https://" + site + ".org/w/api.php",
                 dataType: "jsonp",
+                headers: {
+                    'Api-User-Agent': "NCC2Commons/1.0 (https://NCC2Commons.toolforge.org/; tools.NCC2Commons@toolforge.org)"
+                },
                 data: {
                     action: "query",
                     format: "json",

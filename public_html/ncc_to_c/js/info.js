@@ -8,21 +8,8 @@ function idElement_err(idElement, err) {
 async function check_image_exist(name, site, callback) {
     //---
     return new Promise((resolve, reject) => {
-        var params = {
-            "action": "query",
-            "format": "json",
-            "titles": name,
-            "prop": "imageinfo",
-            "iiprop": "url",
-            "formatversion": "2"
-        }
-        // {"action": "query", "format": "json", "prop": "imageinfo", "titles": title, "iiprop": "url", "formatversion": "2"}
-        var url = 'https://' + site + '.org/w/api.php?' + jQuery.param(params);
         //---
-        var proxy = window.location.origin + '/ncc_to_c/get.php?type=json&url=';
-        url = proxy + encodeURIComponent(url);
-        //---https://mdwiki.org/w/api.php?action=query&format=json&titles=File%3APD-icon.svg11&formatversion=2
-        // console.log(url);
+        var url = window.location.origin + '/ncc_to_c/apis/get_img_info.php?' + jQuery.param({ "title": name });
         //---
         $.ajax({
             async: true,

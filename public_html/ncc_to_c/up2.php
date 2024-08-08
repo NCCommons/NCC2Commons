@@ -16,7 +16,6 @@ $title = $_REQUEST['title'] ?? '';
 $files = $_REQUEST['files'] ?? '';
 // remove | from files
 $files = str_replace('|', "", $files);
-$username = $_SESSION['username'] ?? '';
 //---
 $login_sp = '';
 //---

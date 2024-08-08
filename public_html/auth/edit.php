@@ -1,23 +1,22 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+include_once __DIR__ . '/config.php';
 
 use MediaWiki\OAuthClient\Client;
 use MediaWiki\OAuthClient\ClientConfig;
 use MediaWiki\OAuthClient\Consumer;
 use MediaWiki\OAuthClient\Token;
 
-// Output the demo as plain text, for easier formatting.
-// header( 'Content-type: text/plain' );
-
-// Get the wiki URL and OAuth consumer details from the config file.
-require_once __DIR__ . '/config.php';
-
 // Configure the OAuth client with the URL and consumer details.
 $conf = new ClientConfig($oauthUrl);
 $conf->setConsumer(new Consumer($consumerKey, $consumerSecret));
 $conf->setUserAgent($gUserAgent);
 $client = new Client($conf);
+
+// if (!isset($_SESSION['access_key']) || !isset($_SESSION['access_secret'])) {
+//     echo "Access token not found in session.";
+//     exit;
+// }
 
 // Load the Access Token from the session.
 session_start();
@@ -29,12 +28,13 @@ echo "You are authenticated as " . htmlspecialchars($ident->username, ENT_QUOTES
 
 function get_edit_token()
 {
-	global $client, $accessToken, $apiUrl;
+	global $client, $accessToken, $apiUrl, $editToken;
 	// Example 3: make an edit (getting the edit token first).
-	$editToken = json_decode($client->makeOAuthCall(
+	$response = $client->makeOAuthCall(
 		$accessToken,
 		"$apiUrl?action=query&meta=tokens&format=json"
-	))->query->tokens->csrftoken;
+	);
+	$editToken = json_decode($response)->query->tokens->csrftoken;
 	//---
 	return $editToken;
 }

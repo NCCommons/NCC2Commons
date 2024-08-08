@@ -1,23 +1,14 @@
 <?php
-//---
-if (isset($_REQUEST['test'])) {
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-};
-//---
-require_once __DIR__ . '/../vendor/autoload.php';
+
+header('Content-type: application/json; charset=utf-8');
+
+include_once __DIR__ . '/config.php';
+
 
 use MediaWiki\OAuthClient\Client;
 use MediaWiki\OAuthClient\ClientConfig;
 use MediaWiki\OAuthClient\Consumer;
 use MediaWiki\OAuthClient\Token;
-
-// Output the demo as json
-header('Content-type: application/json; charset=utf-8');
-
-// Get the wiki URL and OAuth consumer details from the config file.
-require_once __DIR__ . '/config.php';
 
 // Configure the OAuth client with the URL and consumer details.
 $conf = new ClientConfig($oauthUrl);
@@ -36,10 +27,11 @@ function get_edit_token()
 {
     global $client, $accessToken, $apiUrl;
     // Example 3: make an edit (getting the edit token first).
-    $editToken = json_decode($client->makeOAuthCall(
+    $response = $client->makeOAuthCall(
         $accessToken,
         "$apiUrl?action=query&meta=tokens&format=json"
-    ))->query->tokens->csrftoken;
+    );
+    $editToken = json_decode($response)->query->tokens->csrftoken;
     //---
     return $editToken;
 }
@@ -48,9 +40,7 @@ function doApiQuery($Params, $addtoken = null)
 {
     global $client, $accessToken, $apiUrl;
     //---
-    if ($addtoken) {
-        $Params['token'] = get_edit_token();
-    }
+    if ($addtoken !== null) $Params['token'] = get_edit_token();
     //---
     $Result = $client->makeOAuthCall(
         $accessToken,
@@ -93,6 +83,7 @@ function downloadFile($url)
 function upload($post)
 {
     $url = $post['url'] ?? '';
+    $file = $_FILES['file'];
 
     // Validate and sanitize other inputs if needed
     $filename = filter_var($post['filename'] ?? '', FILTER_SANITIZE_STRING);
@@ -106,7 +97,7 @@ function upload($post)
         'comment' => $comment,
     ];
 
-    if ($url == '') {
+    if ($url == '' && (!isset($file))) {
         $err = ["error" => "Invalid", "filename" => $filename, "url" => $url];
         echo json_encode($err);
         return;
@@ -118,8 +109,13 @@ function upload($post)
     if ($by == 'url') {
         $data['url'] = $url;
     } else {
-        $tmp_file = downloadFile($url);
-        $data['file'] = new \CURLFile($tmp_file);
+        // CURLFile
+        if (isset($file)) {
+            $data['file'] = new \CURLFile($file['name'], $file['type'], $file['tmp_name'], $file['size']);
+        } else {
+            $tmp_file = downloadFile($url);
+            $data['file'] = new \CURLFile($tmp_file);
+        }
     }
     // Perform whatever processing or API call you need with the uploaded file
     $response = doEdit($data);

@@ -1,24 +1,13 @@
 <?php
-//---
-if (isset($_REQUEST['test'])) {
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-};
-//---
-require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/../text.php';
+header('Content-type: application/json; charset=utf-8');
+
+include_once __DIR__ . '/config.php';
+include_once __DIR__ . '/helps.php';
 
 use MediaWiki\OAuthClient\Client;
 use MediaWiki\OAuthClient\ClientConfig;
 use MediaWiki\OAuthClient\Consumer;
 use MediaWiki\OAuthClient\Token;
-
-// Output the demo as json
-header('Content-type: application/json; charset=utf-8');
-
-// Get the wiki URL and OAuth consumer details from the config file.
-require_once __DIR__ . '/config.php';
 
 // Configure the OAuth client with the URL and consumer details.
 $conf = new ClientConfig($oauthUrl);
@@ -26,9 +15,11 @@ $conf->setConsumer(new Consumer($consumerKey, $consumerSecret));
 $conf->setUserAgent($gUserAgent);
 $client = new Client($conf);
 
-// Load the Access Token from the session.
-session_start();
-$accessToken = new Token($_SESSION['access_key'], $_SESSION['access_secret']);
+
+$access_key = get_from_cookie('access_key');
+$access_secret = get_from_cookie('access_secret');
+
+$accessToken = new Token($access_key, $access_secret);
 
 // Example 1: get the authenticated user's identity.
 $ident = $client->identify($accessToken);
@@ -71,7 +62,11 @@ $url = $_REQUEST['url'] ?? '';
 $filename = filter_var($_REQUEST['filename'] ?? '', FILTER_SANITIZE_STRING);
 $comment = filter_var($_REQUEST['comment'] ?? '', FILTER_SANITIZE_STRING);
 
-$file_text = make_file_text($filename);
+$file_text = "";
+
+if (function_exists('make_file_text')) {
+    $file_text = make_file_text($filename);
+};
 
 $data = [
     'action' => 'upload',
@@ -92,7 +87,7 @@ $by = $_REQUEST['by'] ?? 'file';
 
 $tmp_file = downloadFile($url);
 $tmp_name = basename($tmp_file);
-$newurl = $main_site . "/ncc_to_c/files/$tmp_name";
+$newurl = $main_site . "/$tool_folder/files/$tmp_name";
 
 if ($by == 'url') {
     // $data['url'] = $url;
@@ -113,12 +108,19 @@ $result = $client->makeOAuthCall(
 );
 //---
 if (!$result) {
-    $err = ["error" => "result error"];
+    $err = ["error" => "Failed to upload the file"];
     echo json_encode($err);
     exit;
 }
 //---
 $response = json_decode($result, true);
+//---
+if (isset($response['error'])) {
+    $err = ["error" => $response['error']];
+    echo json_encode($err);
+    exit;
+}
+//---
 // Delete the temporary file after processing
 unlink($tmp_file);
 
