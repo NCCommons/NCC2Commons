@@ -6,6 +6,7 @@ if (isset($_REQUEST['test']) || $_SERVER['SERVER_NAME'] == 'localhost') {
     error_reporting(E_ALL);
 };
 
+include_once __DIR__ . '/helps.php';
 include_once __DIR__ . '/config.php';
 
 function get_action($action)
